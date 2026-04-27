@@ -49,6 +49,14 @@ const SKILLS = [
     name: "CSS3",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
   },
+  {
+    name: "Figma",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
+  },
+  {
+    name: "Canva",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/canva/canva-original.svg",
+  },
 ];
 
 const PROJECTS = [
@@ -198,99 +206,168 @@ const PROJECTS = [
 
 const CERTS = [
   {
-    name: "Civil Service Examination [Professional Level]",
-    issued: "Issued on: May 2025",
-    logo: "assets/images/certification-logo/csc.svg",
-  },
-  {
-    name: "I.T. Beyond Tomorrow: Shaping the Digital Frontier(RAITE) Participant",
-    issued: "Issued on: October 2025",
-    logo: "assets/images/certification-logo/psite.png",
-  },
-  {
-    name: "AI & Analytics Masterclass Series: Turning Data into Strategic Decisions",
-    issued: "Issued on: August 2025",
-    logo: "assets/images/certification-logo/neust_training.png",
-  },
-  {
-    name: "Information Technology Specialist [Database]",
+    name: "Information Technology Specialist [Databases]",
+    issuer: "Issued by: Certiport, a Pearson VUE business",
     issued: "Issued on: December 2025",
     logo: "assets/images/certification-logo/certiport.png",
+    certificateImage: "assets/images/certificates/it/cert1.png",
+  },
+  {
+    name: "I.T. Beyond Tomorrow: Shaping the Digital Frontier (RAITE)",
+    issuer: "Issued by: RAITE",
+    issued: "Issued on: October 2025",
+    logo: "assets/images/certification-logo/psite.png",
+    certificateImage: "assets/images/certificates/it/cert2.jpeg",
+  },
+  {
+    name: "AI and Analytics Masterclass Series: Turning Data into Strategic Decisions",
+    issuer: "Issued by: NEUST Training",
+    issued: "Issued on: August 2025",
+    logo: "assets/images/certification-logo/neust_training.png",
+    certificateImage: "assets/images/certificates/it/cert3.jpg",
+  },
+  {
+    name: "Civil Service Examination [Professional Level]",
+    issuer: "Issued by: Civil Service Commission",
+    issued: "Issued on: May 2025",
+    logo: "assets/images/certification-logo/csc.svg",
+    certificateImage: "assets/images/certificates/gov/cert1.png",
   },
 ];
 
 /* ── RENDER SKILLS ───────────────────────────────────────────────── */
 const skillsGrid = document.getElementById("skillsGrid");
-SKILLS.forEach((s) => {
-  const item = document.createElement("div");
-  item.className = "skill-item";
-  item.innerHTML = `
-    <img src="${s.icon}" alt="${s.name}" loading="lazy" />
-    <span class="skill-label">${s.name}</span>
-  `;
-  item.addEventListener("click", () => {
-    const wasActive = item.classList.contains("active");
-    skillsGrid
-      .querySelectorAll(".skill-item")
-      .forEach((el) => el.classList.remove("active"));
-    if (!wasActive) item.classList.add("active");
+if (skillsGrid) {
+  SKILLS.forEach((s) => {
+    const item = document.createElement("div");
+    item.className = "skill-item";
+    item.innerHTML = `
+      <img src="${s.icon}" alt="${s.name}" loading="lazy" />
+      <span class="skill-label">${s.name}</span>
+    `;
+    item.addEventListener("click", () => {
+      const wasActive = item.classList.contains("active");
+      skillsGrid
+        .querySelectorAll(".skill-item")
+        .forEach((el) => el.classList.remove("active"));
+      if (!wasActive) item.classList.add("active");
+    });
+    skillsGrid.appendChild(item);
   });
-  skillsGrid.appendChild(item);
-});
+}
 
 /* ── RENDER PROJECTS ─────────────────────────────────────────────── */
 const carousel = document.getElementById("projectsCarousel");
-PROJECTS.forEach((p) => {
-  const card = document.createElement("div");
-  card.className = "project-card";
-  const techHTML = p.techIcons
-    .map(
-      (i) =>
-        `<div class="project-tech-item"><img src="${i.icon}" alt="${i.name}" title="${i.name}" loading="lazy" /><span>${i.name}</span></div>`,
-    )
-    .join("");
-  const mediaClass = p.images.length > 2 ? "gallery-four" : "gallery-two";
-  const galleryHTML = p.images
-    .map(
-      (image, index) =>
-        `<img class="project-gallery-img" src="${image}" alt="${p.title} screenshot ${index + 1}" loading="lazy" />`,
-    )
-    .join("");
-  card.innerHTML = `
-    <div class="project-frame">
-      <div class="project-frame-title">${p.title}</div>
-      <div class="project-frame-media ${mediaClass}">
-        ${galleryHTML}
+if (carousel) {
+  PROJECTS.forEach((p) => {
+    const card = document.createElement("div");
+    card.className = "project-card";
+    const techHTML = p.techIcons
+      .map(
+        (i) =>
+          `<div class="project-tech-item"><img src="${i.icon}" alt="${i.name}" title="${i.name}" loading="lazy" /><span>${i.name}</span></div>`,
+      )
+      .join("");
+    const mediaClass = p.images.length > 2 ? "gallery-four" : "gallery-two";
+    const galleryHTML = p.images
+      .map(
+        (image, index) =>
+          `<img class="project-gallery-img" src="${image}" alt="${p.title} screenshot ${index + 1}" loading="lazy" />`,
+      )
+      .join("");
+    card.innerHTML = `
+      <div class="project-frame">
+        <div class="project-frame-title">${p.title}</div>
+        <div class="project-frame-media ${mediaClass}">
+          ${galleryHTML}
+        </div>
+        <div class="project-frame-details">
+          <div class="project-meta-label">Tech used:</div>
+          <div class="project-tech-icons">${techHTML}</div>
+          <div class="project-meta-label">My Role:</div>
+          <div class="project-desc project-role">${p.role}</div>
+          <div class="project-meta-label">Description:</div>
+          <div class="project-desc project-summary">${p.desc}</div>
+        </div>
       </div>
-      <div class="project-frame-details">
-        <div class="project-meta-label">Tech used:</div>
-        <div class="project-tech-icons">${techHTML}</div>
-        <div class="project-meta-label">My Role:</div>
-        <div class="project-desc project-role">${p.role}</div>
-        <div class="project-meta-label">Description:</div>
-        <div class="project-desc project-summary">${p.desc}</div>
-      </div>
-    </div>
-  `;
-  carousel.appendChild(card);
-});
+    `;
+    carousel.appendChild(card);
+  });
+}
 
 /* ── RENDER CERTS ────────────────────────────────────────────────── */
 const certsGrid = document.getElementById("certsGrid");
-CERTS.forEach((c) => {
-  const card = document.createElement("div");
-  card.className = "cert-card";
-  card.innerHTML = `
-    <div class="cert-info">
-      <div class="cert-name">${c.name}</div>
-      <div class="cert-issued">${c.issued}</div>
-    </div>
-    <div class="cert-logo">
-      <img src="${c.logo}" alt="${c.name} logo" loading="lazy" />
-    </div>
-  `;
-  certsGrid.appendChild(card);
-});
+if (certsGrid) {
+  CERTS.forEach((c) => {
+    const card = document.createElement("div");
+    card.className = "cert-card";
+    card.innerHTML = `
+      <div class="cert-info">
+        <div class="cert-name">${c.name}</div>
+        <div class="cert-issuer">${c.issuer}</div>
+        <div class="cert-issued">${c.issued}</div>
+        <a class="cert-view-link" href="#" data-cert-name="${c.name}" data-cert-issuer="${c.issuer}" data-cert-issued="${c.issued}" data-cert-image="${c.certificateImage}">View &gt;&gt;</a>
+      </div>
+      <div class="cert-logo">
+        <img src="${c.logo}" alt="${c.name} logo" loading="lazy" />
+      </div>
+    `;
+    certsGrid.appendChild(card);
+  });
+}
+
+const certModal = document.getElementById("cert-modal");
+const certModalCloseBtn = document.getElementById("cert-modal-close-btn");
+const certModalTitle = document.getElementById("cert-modal-title");
+const certModalIssuer = document.getElementById("cert-modal-issuer");
+const certModalIssued = document.getElementById("cert-modal-issued");
+const certModalImage = document.getElementById("cert-modal-image");
+
+function openCertModal({ name, issuer, issued, image }) {
+  if (!certModal) return;
+
+  certModalTitle.textContent = name || "Certificate";
+  certModalIssuer.textContent = issuer || "";
+  certModalIssued.textContent = issued || "";
+  certModalImage.src = image || "";
+  certModalImage.alt = `${name || "Certificate"} full preview`;
+
+  certModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeCertModal() {
+  if (!certModal) return;
+  certModal.classList.remove("open");
+  certModalImage.src = "";
+  document.body.style.overflow = "";
+}
+
+if (certsGrid && certModal) {
+  certsGrid.addEventListener("click", (event) => {
+    const trigger = event.target.closest(".cert-view-link");
+    if (!trigger) return;
+
+    event.preventDefault();
+    openCertModal({
+      name: trigger.dataset.certName,
+      issuer: trigger.dataset.certIssuer,
+      issued: trigger.dataset.certIssued,
+      image: trigger.dataset.certImage,
+    });
+  });
+
+  certModalCloseBtn.addEventListener("click", closeCertModal);
+  certModal.addEventListener("click", (event) => {
+    if (event.target === certModal) closeCertModal();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && certModal.classList.contains("open")) {
+      closeCertModal();
+    }
+  });
+}
 
 /* ── THEME TOGGLE ────────────────────────────────────────────────── */
 const html = document.documentElement;
@@ -324,12 +401,14 @@ function flashThemeButton() {
 }
 
 setThemeIcon(html.getAttribute("data-theme") === "dark");
-themeBtn.addEventListener("click", () => {
-  const isDark = html.getAttribute("data-theme") === "dark";
-  html.setAttribute("data-theme", isDark ? "light" : "dark");
-  setThemeIcon(!isDark);
-  flashThemeButton();
-});
+if (themeBtn) {
+  themeBtn.addEventListener("click", () => {
+    const isDark = html.getAttribute("data-theme") === "dark";
+    html.setAttribute("data-theme", isDark ? "light" : "dark");
+    setThemeIcon(!isDark);
+    flashThemeButton();
+  });
+}
 
 /* ── MOBILE NAV ──────────────────────────────────────────────────── */
 const hamburger = document.getElementById("nav-hamburger");
@@ -338,6 +417,8 @@ const navCurrentLabel = document.getElementById("nav-current-label");
 
 const sectionLabels = {
   home: "Home",
+  about: "About",
+  "what-i-can-do": "What I can do",
   skills: "Skills",
   projects: "Projects",
   certifications: "Certifications",
@@ -350,42 +431,63 @@ function setCurrentSectionLabel(sectionId) {
   navCurrentLabel.textContent = sectionLabels[sectionId] || "Home";
 }
 
-hamburger.addEventListener("click", (e) => {
-  e.stopPropagation();
-  const open = mobileMenu.classList.toggle("open");
-  hamburger.setAttribute("aria-expanded", open);
-});
-// Desktop: show on hover of the whole navbar
-const navbar = document.getElementById("navbar");
-let hoverTimeout;
-navbar.addEventListener("mouseenter", () => {
+if (hamburger && mobileMenu) {
+  hamburger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const open = mobileMenu.classList.toggle("open");
+    hamburger.setAttribute("aria-expanded", open);
+  });
+  // Desktop: keep the menu open while hovering the hamburger or the menu.
   if (window.matchMedia("(pointer:fine)").matches) {
-    clearTimeout(hoverTimeout);
+  let hoverCloseTimer;
+
+  const openMenu = () => {
+    clearTimeout(hoverCloseTimer);
     mobileMenu.classList.add("open");
-  }
-});
-navbar.addEventListener("mouseleave", () => {
-  if (window.matchMedia("(pointer:fine)").matches) {
-    hoverTimeout = setTimeout(() => mobileMenu.classList.remove("open"), 200);
-  }
-});
-// Close on link click
-document.querySelectorAll(".nav-links a, #nav-mobile-menu a").forEach((a) => {
-  a.addEventListener("click", () => {
-    const targetId = a.getAttribute("href")?.replace("#", "");
-    if (targetId) setCurrentSectionLabel(targetId);
-    mobileMenu.classList.remove("open");
+    hamburger.setAttribute("aria-expanded", "true");
+  };
+
+  const closeMenu = () => {
+    clearTimeout(hoverCloseTimer);
+    hoverCloseTimer = window.setTimeout(() => {
+      mobileMenu.classList.remove("open");
+      hamburger.setAttribute("aria-expanded", "false");
+    }, 120);
+  };
+
+  hamburger.addEventListener("mouseenter", () => {
+    openMenu();
   });
 
-  // Keep hover highlight anchored to cursor position for a softer interaction.
-  a.addEventListener("pointermove", (event) => {
-    const bounds = a.getBoundingClientRect();
-    const mx = ((event.clientX - bounds.left) / bounds.width) * 100;
-    const my = ((event.clientY - bounds.top) / bounds.height) * 100;
-    a.style.setProperty("--mx", `${mx}%`);
-    a.style.setProperty("--my", `${my}%`);
+  hamburger.addEventListener("mouseleave", () => {
+    closeMenu();
   });
-});
+
+  mobileMenu.addEventListener("mouseenter", () => {
+    openMenu();
+  });
+
+    mobileMenu.addEventListener("mouseleave", () => {
+      closeMenu();
+    });
+  }
+  // Close on link click
+  document.querySelectorAll(".nav-links a, #nav-mobile-menu a").forEach((a) => {
+    a.addEventListener("click", () => {
+      const targetId = a.getAttribute("href")?.replace("#", "");
+      if (targetId) setCurrentSectionLabel(targetId);
+      mobileMenu.classList.remove("open");
+    });
+
+  // Keep hover highlight anchored to cursor position for a softer interaction.
+    a.addEventListener("pointermove", (event) => {
+      const bounds = a.getBoundingClientRect();
+      const mx = ((event.clientX - bounds.left) / bounds.width) * 100;
+      const my = ((event.clientY - bounds.top) / bounds.height) * 100;
+      a.style.setProperty("--mx", `${mx}%`);
+      a.style.setProperty("--my", `${my}%`);
+    });
+  });
 
 const trackedSections = Object.keys(sectionLabels)
   .map((id) => document.getElementById(id))
@@ -400,13 +502,17 @@ function syncLabelWithViewport() {
   setCurrentSectionLabel(activeId);
 }
 
-window.addEventListener("scroll", syncLabelWithViewport, { passive: true });
-window.addEventListener("resize", syncLabelWithViewport);
-syncLabelWithViewport();
+  window.addEventListener("scroll", syncLabelWithViewport, { passive: true });
+  window.addEventListener("resize", syncLabelWithViewport);
+  syncLabelWithViewport();
 
-document.addEventListener("click", (e) => {
-  if (!navbar.contains(e.target)) mobileMenu.classList.remove("open");
-});
+  document.addEventListener("click", (e) => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+      mobileMenu.classList.remove("open");
+      hamburger.setAttribute("aria-expanded", "false");
+    }
+  });
+}
 
 /* ── CONTACT TYPE BUTTONS ────────────────────────────────────────── */
 document.querySelectorAll(".contact-type-btn").forEach((btn) => {
@@ -515,20 +621,69 @@ if (contactForm) {
 }
 
 /* ── TRADEMARK MODAL ─────────────────────────────────────────────── */
-document.getElementById("trademark-btn").addEventListener("click", () => {
-  document.getElementById("trademark-modal").classList.add("open");
-});
-document.getElementById("modal-close-btn").addEventListener("click", () => {
-  document.getElementById("trademark-modal").classList.remove("open");
-});
-document.getElementById("trademark-modal").addEventListener("click", (e) => {
-  if (e.target === e.currentTarget) e.currentTarget.classList.remove("open");
-});
+const trademarkBtn = document.getElementById("trademark-btn");
+const trademarkModal = document.getElementById("trademark-modal");
+const modalCloseBtn = document.getElementById("modal-close-btn");
+
+if (trademarkBtn && trademarkModal && modalCloseBtn) {
+  trademarkBtn.addEventListener("click", () => {
+    trademarkModal.classList.add("open");
+  });
+  modalCloseBtn.addEventListener("click", () => {
+    trademarkModal.classList.remove("open");
+  });
+  trademarkModal.addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove("open");
+  });
+}
 
 /* ── HERO COLLISION ANIMATION ────────────────────────────────────── */
 const heroTitle = document.getElementById("heroTitle");
 // Trigger after a short delay so user sees it
-setTimeout(() => heroTitle.classList.add("collided"), 400);
+if (heroTitle) {
+  setTimeout(() => heroTitle.classList.add("collided"), 400);
+}
+
+/* ── ABOUT COLLISION STACK ──────────────────────────────────────── */
+const aboutStack = document.getElementById("aboutStack");
+if (aboutStack) {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const updateAboutMotion = () => {
+    if (reduceMotion) {
+      aboutStack.style.setProperty("--about-progress", "1");
+      aboutStack.style.setProperty("--about-ease", "1");
+      return;
+    }
+
+    const rect = aboutStack.getBoundingClientRect();
+    const viewportMid = window.innerHeight * 0.5;
+    const stackMid = rect.top + rect.height * 0.5;
+    const centerDistance = Math.abs(stackMid - viewportMid);
+    const travel = window.innerHeight * 0.62 + rect.height * 0.2;
+
+    const progress = Math.max(0, Math.min(1, 1 - centerDistance / travel));
+    const eased = 1 - Math.pow(1 - progress, 3);
+
+    aboutStack.style.setProperty("--about-progress", progress.toFixed(4));
+    aboutStack.style.setProperty("--about-ease", eased.toFixed(4));
+  };
+
+  let aboutTicking = false;
+  const onAboutScroll = () => {
+    if (aboutTicking) return;
+    aboutTicking = true;
+    requestAnimationFrame(() => {
+      updateAboutMotion();
+      aboutTicking = false;
+    });
+  };
+
+  updateAboutMotion();
+  window.addEventListener("scroll", onAboutScroll, { passive: true });
+  window.addEventListener("resize", onAboutScroll);
+  window.addEventListener("orientationchange", onAboutScroll);
+}
 
 /* ── SCROLL REVEAL ───────────────────────────────────────────────── */
 const revealObserver = new IntersectionObserver(
