@@ -373,6 +373,7 @@ if (certsGrid && certModal) {
 const html = document.documentElement;
 const themeBtn = document.getElementById("theme-btn");
 const themeIcon = document.getElementById("theme-icon");
+const THEME_STORAGE_KEY = "alliah-theme";
 
 function setThemeIcon(isDarkMode) {
   if (!themeIcon) return;
@@ -400,12 +401,37 @@ function flashThemeButton() {
   window.setTimeout(() => themeBtn.classList.remove("flash"), 180);
 }
 
+function getSavedTheme() {
+  try {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (savedTheme === "dark" || savedTheme === "light") return savedTheme;
+  } catch {
+    // Ignore storage errors and keep default theme.
+  }
+
+  return null;
+}
+
+const persistedTheme = getSavedTheme();
+if (persistedTheme) {
+  html.setAttribute("data-theme", persistedTheme);
+}
+
 setThemeIcon(html.getAttribute("data-theme") === "dark");
 if (themeBtn) {
   themeBtn.addEventListener("click", () => {
     const isDark = html.getAttribute("data-theme") === "dark";
-    html.setAttribute("data-theme", isDark ? "light" : "dark");
-    setThemeIcon(!isDark);
+    const nextTheme = isDark ? "light" : "dark";
+
+    html.setAttribute("data-theme", nextTheme);
+    setThemeIcon(nextTheme === "dark");
+
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    } catch {
+      // Ignore storage errors so toggle still works.
+    }
+
     flashThemeButton();
   });
 }

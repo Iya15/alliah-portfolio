@@ -103,7 +103,7 @@ body {
 /* ─── HONEYBEE (top-right, slow drift) ─────────────────────────── */
 #bee-wrap {
   position: fixed;
-  top: 80px;
+  top: 90px;
   right: clamp(60px, 12vw, 180px);
   z-index: 10;
   pointer-events: none;
@@ -124,7 +124,13 @@ body {
 }
 #bee-wrap svg {
   animation: beeDrift 7s ease-in-out infinite;
-  width: clamp(50px, 7vw, 90px);
+  width: clamp(64px, 8.6vw, 118px);
+}
+
+@media (max-width: 700px) {
+  #bee-wrap svg {
+    width: clamp(50px, 14vw, 68px);
+  }
 }
 
 /* ─── NAVBAR ────────────────────────────────────────────────────── */
@@ -584,6 +590,7 @@ main {
   gap: 12px;
   width: fit-content;
   max-width: 100%;
+  flex: 0 1 auto;
   padding: 11px 14px;
   border-radius: 12px;
   background: color-mix(in srgb, var(--surface) 84%, var(--orange) 16%);
@@ -630,6 +637,15 @@ main {
   }
   .capability-card {
     padding: 10px 12px;
+  }
+}
+
+@media (min-width: 760px) {
+  .capabilities-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
   }
 }
 
@@ -1378,7 +1394,7 @@ footer {
   text-align: center;
   padding: 24px 16px;
   font-size: 0.72rem;
-  color: var(--text2);
+  color: var(--text);
   border-top: 1px solid var(--border);
   margin-top: 40px;
   position: relative;
@@ -1386,7 +1402,7 @@ footer {
   background-color: #e7901d;
 }
 #trademark-btn {
-  color: var(--text2);
+  color: var(--text);
   cursor: pointer;
   text-decoration: underline;
   background: none;
