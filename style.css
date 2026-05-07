@@ -1355,6 +1355,12 @@ body.cert-archive .certifications-page-body {
   width: 20px;
   height: 20px;
 }
+.link-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+}
 .gmail-div {
   background: var(--surface);
   border: 2px solid var(--border);
