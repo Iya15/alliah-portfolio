@@ -683,10 +683,14 @@ if (aboutStack) {
     }
 
     const rect = aboutStack.getBoundingClientRect();
-    const viewportMid = window.innerHeight * 0.5;
+    /*
+     * Use visualViewport.height when available 
+     */
+    const vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
+    const viewportMid = vh * 0.5;
     const stackMid = rect.top + rect.height * 0.5;
     const centerDistance = Math.abs(stackMid - viewportMid);
-    const travel = window.innerHeight * 0.62 + rect.height * 0.2;
+    const travel = vh * 0.62 + rect.height * 0.2;
 
     const progress = Math.max(0, Math.min(1, 1 - centerDistance / travel));
     const eased = 1 - Math.pow(1 - progress, 3);
@@ -707,8 +711,15 @@ if (aboutStack) {
 
   updateAboutMotion();
   window.addEventListener("scroll", onAboutScroll, { passive: true });
+
+  window.addEventListener("touchmove", onAboutScroll, { passive: true });
   window.addEventListener("resize", onAboutScroll);
   window.addEventListener("orientationchange", onAboutScroll);
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", onAboutScroll);
+    window.visualViewport.addEventListener("scroll", onAboutScroll);
+  }
 }
 
 /* ── SCROLL REVEAL ───────────────────────────────────────────────── */

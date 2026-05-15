@@ -133,6 +133,14 @@ body {
   }
 }
 
+/* On small phones the -30px left offset risks clipping; neutralise it */
+@media (max-width: 480px) {
+  .hero-title-wrap {
+    left: 0;
+    max-width: 100%;
+  }
+}
+
 /* ─── NAVBAR ────────────────────────────────────────────────────── */
 #navbar-wrap {
   position: sticky;
@@ -363,6 +371,8 @@ main {
   justify-content: center;
   padding-top: 60px;
   padding-bottom: 18px;
+  /* Contain the hero-title translateX entry animation on iOS */
+  overflow: hidden;
 }
 
 /* Colliding title */
@@ -371,7 +381,8 @@ main {
   left: -30px;
   display: block;
   width: fit-content;
-  max-width: 100%;
+  /* Guard: never let the offset push content past the left edge */
+  max-width: calc(100% + 30px);
   min-height: clamp(92px, 15vw, 128px);
   margin: 10px auto 50px;
 }
@@ -469,6 +480,14 @@ main {
 #about {
   padding-bottom: 16px;
   position: relative;
+  /*
+   * CRITICAL iOS FIX: The about-cards translate ±126px (up to ±186px with
+   * --about-shift scaling). On iOS Safari, off-screen transformed elements
+   * expand the layout viewport, causing the page to zoom out.
+   * overflow: hidden clips them to this section boundary — the slide-in
+   * animation is still fully visible within the section.
+   */
+  overflow: hidden;
 }
 .about-stack {
   position: relative;
@@ -495,6 +514,9 @@ main {
   padding: 14px 16px;
   opacity: 0;
   will-change: transform, opacity;
+  /* Force GPU layer on iOS so property updates are composited, not reflowed */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   box-shadow: var(--about-card-shadow);
   transform-origin: center;
   --about-shift: calc(1 + var(--order) * 0.12);
@@ -546,6 +568,25 @@ main {
   }
   .about-card {
     padding: 12px 11px;
+  }
+
+  /* Reduce horizontal travel to ~18vw on mobile so the animation is
+     proportional to screen width and less extreme */
+  .about-card:nth-child(odd) {
+    transform: translate3d(
+        calc((-18vw * var(--about-shift)) * (1 - var(--about-ease))),
+        calc((-16px * var(--about-shift)) * (1 - var(--about-ease))),
+        0
+      )
+      rotate(calc((-3deg * var(--about-shift)) * (1 - var(--about-ease))));
+  }
+  .about-card:nth-child(even) {
+    transform: translate3d(
+        calc((18vw * var(--about-shift)) * (1 - var(--about-ease))),
+        calc((16px * var(--about-shift)) * (1 - var(--about-ease))),
+        0
+      )
+      rotate(calc((3deg * var(--about-shift)) * (1 - var(--about-ease))));
   }
 }
 
@@ -1390,6 +1431,11 @@ body.cert-archive .certifications-page-body {
   text-decoration: none;
   display: inline-block;
 }
+
+#li-badge-light {
+  margin-bottom: 10px;
+}
+
 .resume-btn:hover {
   background: #c97a15;
   transform: translateY(-2px);
