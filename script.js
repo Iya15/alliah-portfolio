@@ -61,6 +61,68 @@ const SKILLS = [
 
 const PROJECTS = [
   {
+    title: "BrewBoba",
+    images: [
+      "assets/images/projects/brewboba/pic1.png",
+      "assets/images/projects/brewboba/pic2.png",
+    ],
+    techIcons: [
+      {
+        name: "React",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+      },
+      {
+        name: "Vite",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg",
+      },
+      {
+        name: "TypeScript",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+      },
+      {
+        name: "Tailwind",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg",
+      },
+    ],
+    role: "Developer",
+    desc: "BrewBoba is a static web development project created to showcase a modern milk tea brand through visually appealing UI/UX design, realistic product presentation, and responsive frontend development.",
+    github: "https://github.com/Iya15/BrewBoba",
+    liveDemo: "https://brewboba.vercel.app",
+  },
+  {
+    title: "AI Study Assistant",
+    images: [
+      "assets/images/projects/ai-study-assistant/pic1.png",
+      "assets/images/projects/ai-study-assistant/pic2.png",
+    ],
+    techIcons: [
+      {
+        name: "React",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+      },
+      {
+        name: "Vite",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg",
+      },
+      {
+        name: "PostgreSQL",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+      },
+      {
+        name: "Tailwind",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg",
+      },
+      {
+        name: "Express",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
+      },
+    ],
+    role: "Developer",
+    desc: "An AI-powered study companion for BSIT and college students. Designed to help with programming, exams, and quizzes. A SaaS application built to make studying smarter and more efficient.",
+    github: "https://github.com/Iya15/AI-Study-Assistant",
+    liveDemo: "https://ai-study-assistant-sigma-ten.vercel.app",
+  },
+  {
     title: "VA Select",
     images: [
       "assets/images/projects/va-select/pic1.png",
@@ -112,7 +174,7 @@ const PROJECTS = [
       },
     ],
     role: "Developer",
-    desc: "This system are focused on tracking medicine’s expiration dates, it has notifications for low stocks and expiring medicines. Stores detailed medicine information, and inventory records. The dashboard shows the system’s summary analytics. It has account creation for pharmacist and admin for security. Stores activity logs for action traceability.",
+    desc: "This system are focused on tracking medicine’s expiration dates, it has notifications for low stocks and expiring medicines. Stores detailed medicine information, and inventory records. The dashboard shows the system’s summary analytics. Stores activity logs for traceability.",
   },
   {
     title: "Bus Booking",
@@ -173,6 +235,7 @@ const PROJECTS = [
     ],
     role: "Developer",
     desc: "This app provides a flip-card review tool for a student. It can create flashcards by subject and create a flipping card that can be helpful for studying. You can create a folder and group flashcards that are related to each other.",
+    layout: "mobile",
   },
   {
     title: "You Got Serve",
@@ -268,13 +331,25 @@ if (carousel) {
           `<div class="project-tech-item"><img src="${i.icon}" alt="${i.name}" title="${i.name}" loading="lazy" /><span>${i.name}</span></div>`,
       )
       .join("");
-    const mediaClass = p.images.length > 2 ? "gallery-four" : "gallery-two";
+    const mediaClass = p.layout === "mobile" ? "gallery-mobile" : "gallery-landscape";
     const galleryHTML = p.images
       .map(
         (image, index) =>
           `<img class="project-gallery-img" src="${image}" alt="${p.title} screenshot ${index + 1}" loading="lazy" />`,
       )
       .join("");
+    const linksHTML = (p.github || p.liveDemo) ? `
+      <div class="project-links">
+        ${p.github ? `<a class="project-link-btn project-link-github" href="${p.github}" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>` : ""}
+        ${p.liveDemo ? `<a class="project-link-btn project-link-demo" href="${p.liveDemo}" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Live Demo
+        </a>` : ""}
+      </div>` : "";
+
     card.innerHTML = `
       <div class="project-frame">
         <div class="project-frame-title">${p.title}</div>
@@ -288,11 +363,33 @@ if (carousel) {
           <div class="project-desc project-role">${p.role}</div>
           <div class="project-meta-label">Description:</div>
           <div class="project-desc project-summary">${p.desc}</div>
+          ${linksHTML}
         </div>
       </div>
     `;
     carousel.appendChild(card);
   });
+
+  /* ── PROJECTS PAGINATION ─────────────────────────────────────────── */
+  const pagination = document.getElementById("projectsPagination");
+  if (pagination) {
+    const total = PROJECTS.length;
+
+    const updatePagination = () => {
+      const cards = carousel.querySelectorAll(".project-card");
+      const carouselLeft = carousel.getBoundingClientRect().left;
+      let closest = 0;
+      let minDist = Infinity;
+      cards.forEach((card, i) => {
+        const dist = Math.abs(card.getBoundingClientRect().left - carouselLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      pagination.textContent = `${closest + 1} / ${total}`;
+    };
+
+    updatePagination();
+    carousel.addEventListener("scroll", updatePagination, { passive: true });
+  }
 }
 
 /* ── RENDER CERTS ────────────────────────────────────────────────── */

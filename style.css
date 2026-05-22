@@ -476,6 +476,32 @@ main {
   padding-top: 30px;
 }
 
+/* Row that holds a section title + an optional badge (e.g. pagination) */
+.section-title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+.section-title-row .section-title {
+  margin-bottom: 0;
+}
+
+/* Projects pagination badge */
+.projects-pagination {
+  background: color-mix(in srgb, var(--orange) 14%, var(--surface));
+  color: var(--orange);
+  border: 2px solid var(--orange);
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
 /* ─── ABOUT ─────────────────────────────────────────────────────── */
 #about {
   padding-bottom: 16px;
@@ -762,7 +788,7 @@ main {
 .projects-carousel-wrap {
   position: relative;
   width: min(100%, 1120px);
-  height: 780px;
+  /* height is driven by card content — no fixed ceiling on desktop */
   margin: 0 auto;
   padding: 14px;
   background: var(--surface);
@@ -774,10 +800,9 @@ main {
   display: flex;
   gap: 18px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  height: 100%;
   padding-bottom: 6px;
   scrollbar-width: thin;
   scrollbar-color: var(--orange) transparent;
@@ -790,10 +815,18 @@ main {
   border-radius: 999px;
 }
 .project-card {
-  width: clamp(280px, 74vw, 340px);
+  width: clamp(290px, 74vw, 340px);
   flex: 0 0 auto;
   scroll-snap-align: start;
   align-self: flex-start;
+  /* no vertical scroll needed — wrap expands to fit content */
+}
+.project-card::-webkit-scrollbar {
+  width: 4px;
+}
+.project-card::-webkit-scrollbar-thumb {
+  background: var(--orange);
+  border-radius: 999px;
 }
 .project-frame {
   background: var(--surface);
@@ -819,32 +852,54 @@ main {
   letter-spacing: 0.2px;
 }
 .project-frame-media {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 10px;
   padding: 12px;
-  min-height: 220px;
-  align-items: stretch;
 }
-.project-frame-media.gallery-four {
-  grid-template-columns: repeat(2, 1fr);
+
+/* Landscape projects — images stacked vertically at natural ratio */
+.project-frame-media.gallery-landscape {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.project-gallery-img {
+.project-frame-media.gallery-landscape .project-gallery-img {
   width: 100%;
+  height: auto;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   border: 2px solid rgba(0, 0, 0, 0.08);
   background: #f1f1f1;
 }
-.project-frame-media.gallery-two .project-gallery-img:first-child {
-  grid-row: 1 / span 2;
-  aspect-ratio: 16 / 9;
+
+/* Mobile/portrait projects — horizontal scrollable strip */
+.project-frame-media.gallery-mobile {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--orange) transparent;
 }
-.project-frame-media.gallery-two .project-gallery-img:not(:first-child) {
-  aspect-ratio: 16 / 9;
+.project-frame-media.gallery-mobile::-webkit-scrollbar {
+  height: 4px;
 }
-.project-frame-media.gallery-four .project-gallery-img {
-  aspect-ratio: 4 / 3;
+.project-frame-media.gallery-mobile::-webkit-scrollbar-thumb {
+  background: var(--orange);
+  border-radius: 999px;
+}
+.project-frame-media.gallery-mobile .project-gallery-img {
+  flex: 0 0 auto;
+  display: block;
+  /* portrait phone screen ratio */
+  width: auto;
+  height: 260px;
+  aspect-ratio: 9 / 19.5;
+  object-fit: cover;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  background: #f1f1f1;
+  scroll-snap-align: start;
 }
 .project-frame-details {
   padding: 0 12px 14px;
@@ -881,27 +936,63 @@ main {
 .project-summary {
   line-height: 1.5;
 }
+.project-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.project-links .project-link-btn {
+  flex: 1;
+  justify-content: center;
+}
+.project-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.project-link-btn:hover {
+  transform: translateY(-2px);
+}
+.project-link-github {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+.project-link-github:hover {
+  background: #24292e;
+  color: #fff;
+  border-color: #24292e;
+}
+.project-link-demo {
+  background: var(--orange);
+  color: #fff;
+  border: 1.5px solid var(--orange);
+}
+.project-link-demo:hover {
+  background: #c97a15;
+  border-color: #c97a15;
+}
 
 @media (max-width: 800px) {
   .projects-carousel-wrap {
-    height: auto;
-    min-height: 680px;
+    min-height: 480px;
   }
 
   .project-card {
-    width: min(86vw, 340px);
+    /* Narrower than the carousel inner width so the next card peeks through */
+    width: clamp(290px, 72vw, 300px);
   }
 
-  .project-frame-media {
-    grid-template-columns: 1fr;
-  }
-
-  .project-frame-media.gallery-two .project-gallery-img:first-child {
-    grid-row: auto;
-  }
-
-  .project-frame-media.gallery-four .project-gallery-img {
-    aspect-ratio: 16 / 9;
+  /* Slightly smaller portrait images on narrow screens */
+  .project-frame-media.gallery-mobile .project-gallery-img {
+    height: 210px;
   }
 }
 
